@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Palanikannan1437/crypDough-Backend.git"
+    "url": "git+https://github.com/Palanikannan1437/crypDough-Backend.git"
   },
   "author": "palanikannan,saipriya",
   "license": "ISC",
