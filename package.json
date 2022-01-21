@@ -1,0 +1,23 @@
+{
+  "name": "crypdough-backend",
+  "version": "1.0.0",
+  "description": "crpyDough's backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Palanikannan1437/crypDough-Backend.git"
+  },
+  "author": "palanikannan,saipriya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Palanikannan1437/crypDough-Backend/issues"
+  },
+  "homepage": "https://github.com/Palanikannan1437/crypDough-Backend#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3"
+  }
+}
