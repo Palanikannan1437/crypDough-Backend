@@ -1,0 +1,120 @@
+const connection = require("../database/connection");
+
+// / url
+exports.getPostedBlogs = (req, res) => {
+  let sql = `SELECT * FROM Blogs where blog_status="posted"`;
+  connection.query(sql, function (err, results, fields) {
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: results,
+      },
+    });
+  });
+};
+
+exports.saveBlog = (req, res) => {
+  let sql0 = "SELECT * from Blogs where Blog_ID=?";
+  connection.query(
+    sql0,
+    [req.body.email + req.body.blogNumber],
+    function (err, results, fields) {
+      console.log("first save");
+      if (results.length === 0) {
+        let sql =
+          "INSERT INTO Blogs (Blog_ID,Author_Email,Blog_Title,Blog_Photo,Blog_Content,blog_status) VALUES (?,?,?,?,?,?)";
+        var values = [
+          req.body.email + req.body.blogNumber,
+          req.body.email,
+          req.body.title,
+          req.body.photo,
+          req.body.post,
+          "saved",
+        ];
+
+        connection.query(sql, values, function (err, results, fields) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({
+              status: "success",
+            });
+          }
+        });
+      } else {
+        console.log("second save");
+        let sql1 =
+          "UPDATE Blogs SET Blog_Title=?, Blog_Content=?, blog_status=? WHERE Blog_ID=?";
+        var values = [
+          req.body.title,
+          req.body.post,
+          "saved",
+          req.body.email + req.body.blogNumber,
+        ];
+        connection.query(sql1, values, function (err, results, fields) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({
+              status: "success",
+            });
+          }
+        });
+      }
+    }
+  );
+};
+
+exports.postBlog = (req, res) => {
+  let sql =
+    "UPDATE Blogs SET Blog_Title=?, Blog_Content=?, blog_status=? WHERE Blog_ID=?";
+
+  var values = [
+    req.body.title,
+    req.body.post,
+    "posted",
+    req.body.email + req.body.blogNumber,
+  ];
+
+  connection.query(sql, values, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.status(200).json({
+      status: "success",
+    });
+  });
+};
+
+// /:userid url
+exports.getUserBlogsCount = (req, res) => {
+  let sql = `SELECT Blog_Title,Blog_ID,Blog_Date,blog_status from Blogs where Author_Email=?`;
+  console.log(req.query.count);
+  if (req.query.count === "yes") {
+    sql = `SELECT COUNT(*) from Blogs where Author_Email=?`;
+  }
+  var values = [req.params.userid];
+  connection.query(sql, values, function (err, results, fields) {
+    if (err) {
+      console.log(err);
+      return;
+    }
+    if (req.query.count === "yes") {
+      console.log("asfafsafassfaf");
+      res.status(200).json({
+        status: "success",
+        data: {
+          count: results[0]["COUNT(*)"],
+        },
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        data: {
+          data: results,
+        },
+      });
+    }
+  });
+};

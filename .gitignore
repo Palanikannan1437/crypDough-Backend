@@ -1,2 +1,9 @@
 # dependencies
 /node_modules
+
+#environment variables
+*.env
+
+#querying files
+*.sql
+.DS_Store
