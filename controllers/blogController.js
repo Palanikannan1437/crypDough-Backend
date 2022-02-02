@@ -1,28 +1,43 @@
 const connection = require("../database/connection");
 
+function TrimName(name) {
+  if (name.length > 100) {
+    let name1 = name.slice(0, 100);
+    while (name1.charAt(name1.length - 1) !== " " && name1.length !== 0) {
+      name1 = name1.slice(0, -1);
+    }
+    return name1;
+  } else {
+    return name;
+  }
+}
 // / url
 exports.getPostedBlogs = (req, res) => {
   let sql = `SELECT * FROM Blogs where blog_status="posted"`;
   connection.query(sql, function (err, results, fields) {
+    const finalResults = results.map((post) => {
+      post.Blog_Content = TrimName(post.Blog_Content);
+      return post;
+    });
     res.status(200).json({
       status: "success",
       data: {
-        data: results,
+        data: finalResults,
       },
     });
   });
 };
 
-exports.getBlog = (req,res) => {
+exports.getBlog = (req, res) => {
   let sql = "SELECT * from Blogs where Blog_ID=?";
-  connection.query(sql,[req.params.blogid],(err,results,fields)=>{
+  connection.query(sql, [req.params.blogid], (err, results, fields) => {
     console.log(results);
     res.status(200).json({
-      status:"success",
-      data: results[0]
-    })
-  })
-}
+      status: "success",
+      data: results[0],
+    });
+  });
+};
 
 exports.saveBlog = (req, res) => {
   let sql0 = "SELECT * from Blogs where Blog_ID=?";
