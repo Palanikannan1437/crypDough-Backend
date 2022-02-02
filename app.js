@@ -5,16 +5,22 @@ var cors = require("cors");
 const app = express();
 
 app.use(cors());
-app.use(morgan("dev"));
+
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
 app.use(express.json());
 
 const blogRouter = require("./routes/blogRoutes");
 const userRouter = require("./routes/userRoutes");
 
-app.use('/api/v1/blogs',blogRouter);
-app.use('/api/v1/users',userRouter);
+app.use("/api/v1/blogs", blogRouter);
+app.use("/api/v1/users", userRouter);
 
-// app.post("/api/v1/save-blog", (req, res) => {
+module.exports = app;
+
+// app.post("/api/v1/blogs", (req, res) => {
 //   console.log(req.body);
 //   sql0 = "SELECT * from Blogs where Blog_ID=?";
 //   connection.query(
@@ -92,7 +98,7 @@ app.use('/api/v1/users',userRouter);
 // });
 
 //turn to a get request
-// app.post("/api/v1/blogs/user", (req, res) => {
+// app.post("/api/v1/blogs/:userid?count="yes", (req, res) => {
 //   sql = `SELECT COUNT(*) from Blogs where Author_Email=?`;
 //   var values = [req.body.email];
 //   connection.query(sql, values, function (err, results, fields) {
@@ -109,7 +115,7 @@ app.use('/api/v1/users',userRouter);
 //   });
 // });
 
-// app.post("/api/v1/users/blogs", (req, res) => {
+// app.get("/api/v1/blogs/:userid", (req, res) => {
 //   sql = `SELECT Blog_Title,Blog_ID,Blog_Date,blog_status from Blogs where Author_Email=?`;
 //   var values = [req.body.email];
 //   connection.query(sql, values, function (err, results, fields) {
@@ -137,5 +143,3 @@ app.use('/api/v1/users',userRouter);
 //     });
 //   });
 // });
-
-module.exports = app;

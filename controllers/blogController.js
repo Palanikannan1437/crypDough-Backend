@@ -13,6 +13,17 @@ exports.getPostedBlogs = (req, res) => {
   });
 };
 
+exports.getBlog = (req,res) => {
+  let sql = "SELECT * from Blogs where Blog_ID=?";
+  connection.query(sql,[req.params.blogid],(err,results,fields)=>{
+    console.log(results);
+    res.status(200).json({
+      status:"success",
+      data: results[0]
+    })
+  })
+}
+
 exports.saveBlog = (req, res) => {
   let sql0 = "SELECT * from Blogs where Blog_ID=?";
   connection.query(
@@ -88,11 +99,12 @@ exports.postBlog = (req, res) => {
 };
 
 // /:userid url
-exports.getUserBlogsCount = (req, res) => {
-  let sql = `SELECT Blog_Title,Blog_ID,Blog_Date,blog_status from Blogs where Author_Email=?`;
-  console.log(req.query.count);
+exports.getUserBlogs = (req, res) => {
+  let sql;
   if (req.query.count === "yes") {
     sql = `SELECT COUNT(*) from Blogs where Author_Email=?`;
+  } else {
+    sql = `SELECT Blog_Title,Blog_ID,Blog_Date,blog_status from Blogs where Author_Email=?`;
   }
   var values = [req.params.userid];
   connection.query(sql, values, function (err, results, fields) {
@@ -101,7 +113,6 @@ exports.getUserBlogsCount = (req, res) => {
       return;
     }
     if (req.query.count === "yes") {
-      console.log("asfafsafassfaf");
       res.status(200).json({
         status: "success",
         data: {

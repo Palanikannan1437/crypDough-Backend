@@ -9,8 +9,8 @@ blogRouter
   .post(blogController.saveBlog)
   .patch(blogController.postBlog);
 
-blogRouter
-  .route("/:userid")
-  .get(blogController.getUserBlogsCount);
+blogRouter.route("/:userid").get(blogController.getUserBlogs);
+
+blogRouter.route("/blog/:blogid").get(blogController.getBlog);
 
 module.exports = blogRouter;
