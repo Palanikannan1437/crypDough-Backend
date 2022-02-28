@@ -2,6 +2,8 @@ const express = require("express");
 
 const blogRouter = express.Router();
 const blogController = require("../controllers/blogController");
+const authController = require("../controllers/authController");
+
 
 blogRouter
   .route("/")
