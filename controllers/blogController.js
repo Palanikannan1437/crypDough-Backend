@@ -49,7 +49,7 @@ exports.saveBlog = (req, res) => {
       if (results.length === 0) {
         let sql =
           "INSERT INTO Blogs (Blog_ID,Author_Email,Blog_Title,Blog_Photo,Blog_Content,blog_status) VALUES (?,?,?,?,?,?)";
-        var values = [
+        let values = [
           req.body.email + req.body.blogNumber,
           req.body.email,
           req.body.title,
