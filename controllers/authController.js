@@ -24,8 +24,10 @@ exports.signUp = async (req, res) => {
 
   connection.query(sql, values, function (err, results, fields) {
     if (err) {
-      res.json({
+      console.log(err)
+      res.status(401).json({
         status: "Enter valid details,sign up failed!",
+        error: err,
       });
     } else {
       let sql1 =
@@ -33,11 +35,11 @@ exports.signUp = async (req, res) => {
       let values = [req.body.User_Email];
       connection.query(sql1, values, function (err, results, fields) {
         const token = signToken(results[0]["BIN_TO_UUID(id)"]);
-
+        console.log(results[0].User_Email)
         res.status(201).json({
           status: "success",
           token: token,
-          data: { user_data: results },
+          data: { user_data: results[0] },
         });
       });
     }
