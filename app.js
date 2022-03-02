@@ -14,9 +14,11 @@ app.use(express.json());
 
 const blogRouter = require("./routes/blogRoutes");
 const userRouter = require("./routes/userRoutes");
+const commentRouter = require("./routes/commentRoutes");
 
 app.use("/api/v1/blogs", blogRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/comments", commentRouter);
 
 module.exports = app;
 
