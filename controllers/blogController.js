@@ -39,6 +39,22 @@ exports.getBlog = (req, res) => {
   });
 };
 
+exports.getUserBlogTitles = (req, res) => {
+  let sql = `SELECT Blog_Title,Blog_ID from Blogs where Author_Email=?`;
+  //Author_Email undefined? Where did you come from where did you go, where did you come from aotton eyed Joe????
+  var values=[req.params.email];
+  connection.query(sql, values, (err, results, fields) => {
+    console.log(results);
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: results,
+        //Do data.data.data teapot head, array bhej rahi hai
+      },
+    });
+  });
+};
+
 exports.saveBlog = (req, res) => {
   let sql0 = "SELECT * from Blogs where Blog_ID=?";
   connection.query(
@@ -46,6 +62,7 @@ exports.saveBlog = (req, res) => {
     [req.body.email + req.body.blogNumber],
     function (err, results, fields) {
       console.log("first save");
+      console.log(results);
       if (results.length === 0) {
         let sql =
           "INSERT INTO Blogs (Blog_ID,Author_Email,Blog_Title,Blog_Photo,Blog_Content,blog_status) VALUES (?,?,?,?,?,?)";

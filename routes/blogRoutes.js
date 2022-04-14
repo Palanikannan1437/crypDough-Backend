@@ -13,4 +13,6 @@ blogRouter.route("/:userid").get(blogController.getUserBlogs);
 
 blogRouter.route("/blog/:blogid").get(blogController.getBlog);
 
+blogRouter.route("/blog/user/:email").get(blogController.getUserBlogTitles);
+
 module.exports = blogRouter;
