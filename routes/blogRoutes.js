@@ -15,4 +15,8 @@ blogRouter.route("/blog/:blogid").get(blogController.getBlog);
 
 blogRouter.route("/blog/user/:email").get(blogController.getUserBlogTitles);
 
+blogRouter.route("/bookmark").post(blogController.bookmarkBlog);
+
+blogRouter.route("/bookmark/:userid").get(blogController.getBookmarkedBlogs);
+
 module.exports = blogRouter;

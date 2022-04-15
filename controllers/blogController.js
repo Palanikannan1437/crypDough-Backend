@@ -55,6 +55,51 @@ exports.getUserBlogTitles = (req, res) => {
   });
 };
 
+exports.bookmarkBlog = (req, res) => {
+  let sql0="SELECT * FROM Bookmarks WHERE User_Email=? AND Blog_ID=?";
+  connection.query(
+    sql0,
+    [req.body.user,req.body.blogid],
+    function(err,results,field){
+      if (results.length === 0) {
+        let sql1 = "INSERT INTO Bookmarks (User_Email,Blog_ID,Blog_Title,Author_Email) VALUES (?,?,?,?)";
+        var values = [
+          req.body.user,
+          req.body.blogid,
+          req.body.title,
+          req.body.author
+        ];
+        connection.query(sql1, values, function (err, results, fields) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({
+              status: "bookmarked",
+            });
+          }
+        });
+      }
+      else{
+        let sql2="DELETE FROM Bookmarks WHERE User_Email=? AND Blog_ID=?";
+        var values = [
+          req.body.user,
+          req.body.blogid
+        ];
+        connection.query(sql2, values, function (err, results, fields) {
+          if (err) {
+            console.log(err);
+          } else {
+            res.json({
+              status: "removed",
+            });
+          }
+        });
+      }
+    }
+  );
+  
+};
+
 exports.saveBlog = (req, res) => {
   let sql0 = "SELECT * from Blogs where Blog_ID=?";
   connection.query(
@@ -130,6 +175,19 @@ exports.postBlog = (req, res) => {
   });
 };
 
+exports.getBookmarkedBlogs = (req, res) => {
+  let sql = `SELECT Blog_Title,Blog_ID,Author_Email from Bookmarks where User_Email=?`;
+  var values = [req.params.userid];
+  connection.query(sql, values, (err, results, fields) => {
+    console.log(results);
+    res.status(200).json({
+      status: "success",
+      data: {
+        data: results,
+      },
+    });
+  });
+};
 // /:userid url
 exports.getUserBlogs = (req, res) => {
   let sql;
